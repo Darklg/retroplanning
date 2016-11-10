@@ -1,0 +1,113 @@
+@charset "UTF-8";
+
+html {
+    padding: 10px;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 990px;
+    font: 13px sans-serif;
+}
+
+/* ----------------------------------------------------------
+  Infos
+---------------------------------------------------------- */
+
+.block-infos {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.block-infos > * {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.block-infos ul,
+.block-infos li {
+    padding-left: 5px;
+    list-style-type: none;
+}
+
+@media(max-width:700px) {
+    .block-infos,
+    .block-infos > * {
+        display: block;
+    }
+}
+
+/* ----------------------------------------------------------
+  Calendar
+---------------------------------------------------------- */
+
+.block-date {
+    display: inline-block;
+    z-index: 1;
+    position: relative;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 14.28%;
+    padding: 5px;
+    min-height: 10em;
+    border: 1px solid #ccc;
+    vertical-align: top;
+}
+
+.block-date.not-workday {
+    color: #999;
+    background-color: #F0F0F0;
+}
+
+.block-date h3 {
+    color: #999;
+}
+
+.block-date .dot {
+    display: inline-block;
+    z-index: 1;
+    position: relative;
+    width: 10px;
+    vertical-align: top;
+}
+
+.block-date .dot:before {
+    content: '•';
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 2em;
+    line-height: 0.65;
+}
+
+.graph {
+    z-index: 1;
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    left: -1px;
+    height: 5px;
+    margin: auto;
+    overflow: hidden;
+    opacity: 0.50;
+    background-color: #ccc;
+}
+
+.graph > * {
+    float: left;
+    height: 100%;
+}
+
+@media(max-width:700px) {
+    .block-date {
+        display: block;
+        width: auto;
+        min-height: 0;
+    }
+
+    .block-date.day-monday {
+        border-top: 10px solid #CCC;
+    }
+}
