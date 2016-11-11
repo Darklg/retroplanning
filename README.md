@@ -44,6 +44,7 @@ Install
 TODO
 ---
 
+* [ ] Congés
 * [ ] Créer projets à la volée.
 * [ ] Générer iCal.
 * [ ] Gérer API toggl ?
