@@ -4,23 +4,23 @@ ini_set('display_errors', 1);
 
 include dirname(__FILE__) . '/retroplanning.class.php';
 
-$_projects = array();
+$_settings = array();
 
 /* Load from XML */
 if (file_exists('local-planning.xml')) {
-    $projects = simplexml_load_file('local-planning.xml');
-    if (is_object($projects)) {
-        $_projects = json_decode(json_encode($projects), true);
+    $settings = simplexml_load_file('local-planning.xml');
+    if (is_object($settings)) {
+        $_settings = json_decode(json_encode($settings), true);
     }
 }
 
 /* Load from JSON */
 if (file_exists('local-planning.json')) {
-    $projects = file_get_contents('local-planning.json');
-    $projects = json_decode($projects);
-    if (is_object($projects)) {
-        $_projects = json_decode(json_encode($projects), true);
+    $settings = file_get_contents('local-planning.json');
+    $settings = json_decode($settings);
+    if (is_object($settings)) {
+        $_settings = json_decode(json_encode($settings), true);
     }
 }
 
-$retroPlanning = new retroPlanning($_projects);
+$retroPlanning = new retroPlanning($_settings);

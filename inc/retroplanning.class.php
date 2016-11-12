@@ -9,40 +9,79 @@ class retroPlanning {
     public $now;
     public $planning_end;
     public $planning_start;
-    public $projects;
+    public $settings;
     public $today_date;
 
-    public function __construct($projects) {
+    public function __construct($datas) {
 
         /* Now is today at 13:00 */
         $this->now = mktime(13, 0, 0, date('n', time()), date('d', time()), date('Y', time()));
 
         $this->working_days = array(1, 2, 3, 4, 5);
         $this->max_hours_per_day = 7;
+        $this->max_days_displayed = 60;
         $this->holidays = array(
             '01/01',
-            '01/05',
-            '08/05',
-            '14/07',
-            '15/08',
-            '01/11',
-            '11/11',
             '25/12'
         );
+
+        /* Init settings */
+        $settings = array();
+        if (isset($datas['settings']) && is_array($datas['settings'])) {
+            $settings = $datas['settings'];
+        }
+        $this->initSettings($settings);
 
         /* Start previous monday */
         $this->planning_start = strtotime("next monday", $this->now) - 7 * 86400;
 
-        /* End in two months */
-        $two_months = $this->now + 86400 * 60;
-        $this->planning_end = mktime(12, 0, 0, date('n', $two_months), date('t', $two_months), date('Y', $two_months));
+        /* End in n months */
+        $planning_end_days = $this->now + 86400 * $this->max_days_displayed;
+        $this->planning_end = mktime(12, 0, 0, date('n', $planning_end_days), date('t', $planning_end_days), date('Y', $planning_end_days));
         $this->today_date = date('d/m/Y', $this->now);
 
         /* Set projects */
+        $projects = $datas;
+        if (isset($datas['projects']) && is_array($datas['projects'])) {
+            $projects = $datas['projects'];
+        }
         $this->initProjects($projects);
 
         /* Set contents */
         $this->setContents();
+    }
+
+    public function initSettings($settings) {
+
+        /* Max hours per day */
+        if (isset($settings['max_hours_per_day']) && is_numeric($settings['max_hours_per_day'])) {
+            $this->max_hours_per_day = intval($settings['max_hours_per_day'], 10);
+        }
+        /* Max days displayed */
+        if (isset($settings['max_days_displayed']) && is_numeric($settings['max_days_displayed'])) {
+            $this->max_days_displayed = intval($settings['max_days_displayed'], 10);
+        }
+        /* Working days */
+        if (isset($settings['working_days']) && is_array($settings['working_days'])) {
+            $this->working_days = array();
+            $working_days = $settings['working_days'];
+            if (isset($settings['working_days']['day'])) {
+                $working_days = $settings['working_days']['day'];
+            }
+            foreach ($working_days as $day) {
+                if (is_numeric($day)) {
+                    $this->working_days[] = intval($day, 10);
+                }
+            }
+        }
+        /* Holidays */
+        if (isset($settings['holidays']) && is_array($settings['holidays'])) {
+            $this->holidays = $settings['holidays'];
+            if (isset($settings['holidays']['date'])) {
+                $this->holidays = $settings['holidays']['date'];
+            }
+        }
+
     }
 
     public function initProjects($projects) {

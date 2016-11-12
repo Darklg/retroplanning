@@ -1,4 +1,4 @@
-RETRO Planning - v 0.2
+RETRO Planning - v 0.3
 ===
 
 Install
@@ -7,19 +7,29 @@ Install
 * Créer à la racine un fichier nommé local-planning.xml
 
 ```xml
-<?php xmlversion="1.0";?>
+<?xml version="1.0"?>
 <planning>
-    <project_test>
-        <color>#33C</color>
-        <name>Projet test</name>
-        <time_remaining>5</time_remaining>
-        <hours_per_day>1</hours_per_day>
-        <start_time>2016-11-15</start_time>
-        <can_bonus>0</can_bonus>
-    </project_test>
-    <project_id>
-        <start_time>2016-11-16</start_time>
-    </project_id>
+    <settings>
+        <max_hours_per_day>7</max_hours_per_day>
+        <holidays>
+            <date>01/01</date>
+            <date>01/05</date>
+            <date>08/05</date>
+        </holidays>
+    </settings>
+    <projects>
+        <project_test>
+            <color>#33C</color>
+            <name>Projet test</name>
+            <time_remaining>5</time_remaining>
+            <hours_per_day>1</hours_per_day>
+            <start_time>2016-11-15</start_time>
+            <can_bonus>0</can_bonus>
+        </project_test>
+        <project_id>
+            <start_time>2016-11-16</start_time>
+        </project_id>
+    </projects>
 </planning>
 ```
 
@@ -27,15 +37,21 @@ Install
 
 ```json
 {
-    "project_test": {
-        "start_time": "2016-11-16",
-        "name": "Test",
-        "hours_per_day" : "5", // Hours to work per day
-        "can_bonus" : "0", // Cant work more than #hours_per_day.
-        "time_remaining" : "50" // Total project hours
+    "settings": {
+        "holidays": ["11/11","12/11","13/11"],
+        "max_hours_per_day": "8",
     },
-    "project_id": {
-        "start_time": "2016-11-16"
+    "projects": {
+        "project_test": {
+            "start_time": "2016-11-16",
+            "name": "Test",
+            "hours_per_day" : "5",
+            "can_bonus" : "0",
+            "time_remaining" : "50"
+        },
+        "project_id": {
+            "start_time": "2016-11-16"
+        }
     }
 }
 ```
@@ -49,8 +65,6 @@ TODO
 * [ ] Générer iCal.
 * [ ] Gérer API toggl ?
 * [ ] Gérer demi-journées non travaillées (jours avec moins d'heures dispo).
-* [ ] Gérer la config heures par jours.
-* [ ] Gérer les projets à la volée.
 * [ ] License adaptée ?
 * [ ] Monétiser.
 * [ ] Multi-utilisateurs.
@@ -60,6 +74,7 @@ TODO
 DONE
 ---
 
+* [x] Gérer la config heures par jours.
 * [x] Afficher la fin prévue du projet.
 * [x] Gérer projets qui ne peuvent pas passer en bonus time (uniquement la limite d'heure).
 * [x] Utiliser une ref à l'id du projet plutôt qu'au projet
