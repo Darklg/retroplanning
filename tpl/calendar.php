@@ -12,9 +12,16 @@ foreach ($retroPlanning->contents as $content) {
     echo '<div class="' . implode(' ', $classnames) . '">';
     echo '<h3>' . $content['date'] . '</h3>';
     foreach ($content['works'] as $work) {
+        $_color = $_projects[$work['id']]['color'];
+        $_style = 'color: ' . $_color . ';';
+        $_style_color = $_style;
+        if (isset($_GET['filter_client']) && $_GET['filter_client'] != $_projects[$work['id']]['client_id']) {
+            $_style .= 'background:' . $_color . ';';
+        }
+
         echo '<div>';
-        echo '<span class="dot" style="color: ' . $_projects[$work['id']]['color'] . '"></span> ';
-        echo '<strong>' . $_projects[$work['id']]['name'] . ' : ' . number_format($work['today'], 1) . 'h</strong>';
+        echo '<span class="dot" style="' . $_style . '"></span> ';
+        echo '<strong><span style="' . $_style . '">' . $_projects[$work['id']]['name'] . '</span> : ' . number_format($work['today'], 1) . 'h</strong>';
         echo '</div>';
     }
 

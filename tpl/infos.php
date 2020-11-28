@@ -2,10 +2,19 @@
     <div>
         <h3>Projets</h3>
         <ul>
-        <?php foreach ($retroPlanning->projects as $_project): ?>
+        <?php foreach ($retroPlanning->projects as $_project):
+
+            $_color = $_project['color'];
+            $_style = 'color: ' . $_color . ';';
+            $_style_color = $_style;
+            if (isset($_GET['filter_client']) && $_GET['filter_client'] != $_project['client_id']) {
+                $_style .= 'background:' . $_color . ';';
+            }
+
+            ?>
             <li>
-                <span class="dot" style="color: <?php echo $_project['color']; ?>">•</span>
-                <strong><?php echo $_project['name']; ?></strong> :
+                <span class="dot" style="<?php echo $_style_color; ?>">•</span>
+                <strong style="<?php echo $_style; ?>"><?php echo $_project['name']; ?></strong> :
                 ~<?php echo $_project['hours_per_day']; ?>h/j,
                 reste <?php echo $_project['total_time']; ?>h.
                 <?php if ($_project['start_time'] > $retroPlanning->now): ?>

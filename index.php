@@ -1,5 +1,6 @@
 <?php
-include dirname(__FILE__) . '/inc/controller.php';
+define('PROJ_DIR', dirname(__FILE__));
+include PROJ_DIR . '/inc/controller.php';
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 8 ]><html dir="ltr" lang="fr-FR" class="is_ie7 lt_ie8 lt_ie9 lt_ie10"><![endif]-->
@@ -16,8 +17,8 @@ include dirname(__FILE__) . '/inc/controller.php';
 <body>
 <h1>Rétro Planning</h1>
 <?php
-include dirname(__FILE__) . '/tpl/infos.php';
-include dirname(__FILE__) . '/tpl/calendar.php';
+include PROJ_DIR . '/tpl/infos.php';
+include PROJ_DIR . '/tpl/calendar.php';
 ?>
 </body>
 </html>

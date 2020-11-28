@@ -109,9 +109,13 @@ class retroPlanning {
         if (!isset($proj['hours_per_day'])) {
             $proj['hours_per_day'] = 2;
         }
-        /* Init hours per day */
+        /* Init Colors */
         if (!isset($proj['color'])) {
             $proj['color'] = '#777';
+        }
+        /* Init Client */
+        if (!isset($proj['client_id'])) {
+            $proj['client_id'] = 'default';
         }
         /* Init time remaining */
         if (!isset($proj['time_remaining'])) {
