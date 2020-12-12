@@ -5,6 +5,7 @@ class retroPlanning {
     public $contents;
     public $empty_after;
     public $holidays;
+    public $vacations;
     public $max_hours_per_day;
     public $now;
     public $planning_end;
@@ -20,6 +21,7 @@ class retroPlanning {
         $this->working_days = array(1, 2, 3, 4, 5);
         $this->max_hours_per_day = 7;
         $this->max_days_displayed = 60;
+        $this->vacations = array();
         $this->holidays = array(
             '01/01',
             '25/12'
@@ -41,11 +43,18 @@ class retroPlanning {
         $this->today_date = date('d/m/Y', $this->now);
 
         /* Set projects */
-        $projects = $datas;
+        $projects = array();
         if (isset($datas['projects']) && is_array($datas['projects'])) {
             $projects = $datas['projects'];
         }
         $this->initProjects($projects);
+
+        /* Clients */
+        $clients = array();
+        if (isset($datas['clients']) && is_array($datas['clients'])) {
+            $clients = $datas['clients'];
+        }
+        $this->initClients($clients);
 
         /* Set contents */
         $this->setContents();
@@ -74,6 +83,14 @@ class retroPlanning {
                 }
             }
         }
+        /* Vacations */
+        if (isset($settings['vacations']) && is_array($settings['vacations'])) {
+            $this->vacations = $settings['vacations'];
+            if (isset($settings['vacations']['date'])) {
+                $this->vacations = $settings['vacations']['date'];
+            }
+        }
+
         /* Holidays */
         if (isset($settings['holidays']) && is_array($settings['holidays'])) {
             $this->holidays = $settings['holidays'];
@@ -84,15 +101,41 @@ class retroPlanning {
 
     }
 
-    public function initProjects($projects) {
-        $this->projects = $projects;
-        foreach ($this->projects as $id => $proj) {
-            $this->projects[$id] = $this->initProject($id, $proj);
+    public function initClients($clients = array()) {
+        $_clients = array();
+        foreach ($this->projects as $_project) {
+            if (isset($_project['client_id']) && !isset($clients[$_project['client_id']])) {
+                $clients[$_project['client_id']] = array();
+            }
         }
+        foreach ($clients as $_id => $_client) {
+            if (!is_array($_client)) {
+                $_client = array();
+            }
+            if (!isset($_client['color'])) {
+                $_client['color'] = "#999";
+            }
+            $_clients[$_id] = $_client;
+        }
+        ksort($_clients);
+        $this->clients = $_clients;
+    }
+
+    public function initProjects($projects = array()) {
+        $_projects = array();
+        foreach ($projects as $id => $proj) {
+            $_project = $this->initProject($id, $proj);
+            if ($_project) {
+                $_projects[$id] = $_project;
+            }
+        }
+        $this->projects = $_projects;
     }
 
     public function initProject($id, $proj) {
-
+        if (isset($proj['disabled']) && $proj['disabled'] == '1') {
+            return false;
+        }
         /* Default name : id */
         if (!isset($proj['name'])) {
             $proj['name'] = $id;
@@ -109,13 +152,13 @@ class retroPlanning {
         if (!isset($proj['hours_per_day'])) {
             $proj['hours_per_day'] = 2;
         }
-        /* Init Colors */
-        if (!isset($proj['color'])) {
-            $proj['color'] = '#777';
-        }
         /* Init Client */
         if (!isset($proj['client_id'])) {
             $proj['client_id'] = 'default';
+        }
+        /* Init Colors */
+        if (!isset($proj['color'])) {
+            $proj['color'] = '#777';
         }
         /* Init time remaining */
         if (!isset($proj['time_remaining'])) {
@@ -163,7 +206,7 @@ class retroPlanning {
         $today_or_later = $this->contents[$date_id]['date'] == $this->today_date || $this->now <= $day_time;
 
         /* If day is not worked */
-        if (!in_array($weekday, $this->working_days) || !$today_or_later || in_array($day_id, $this->holidays)) {
+        if (!in_array($weekday, $this->working_days) || !$today_or_later || in_array($day_id, $this->holidays) || in_array($day_id, $this->vacations)) {
             $this->contents[$date_id]['is_workday'] = false;
             return;
         }

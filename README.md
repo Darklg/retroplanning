@@ -1,4 +1,4 @@
-RETRO Planning - v 0.3
+RETRO Planning - v 0.5.0
 ===
 
 Install
@@ -60,7 +60,7 @@ Install
 TODO
 ---
 
-* [ ] Congés
+* [ ] Gérer avancement de la journée en cours.
 * [ ] Créer projets à la volée.
 * [ ] Générer iCal.
 * [ ] Gérer API toggl ?
@@ -74,6 +74,7 @@ TODO
 DONE
 ---
 
+* [x] Congés
 * [x] Gérer la config heures par jours.
 * [x] Afficher la fin prévue du projet.
 * [x] Gérer projets qui ne peuvent pas passer en bonus time (uniquement la limite d'heure).

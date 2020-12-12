@@ -28,10 +28,20 @@
         </ul>
     </div>
     <div>
+        <h3>Clients</h3>
+        <ul>
+            <?php foreach ($retroPlanning->clients as $_idClient => $_client): ?>
+            <li><strong><a style="text-decoration:<?php echo(isset($_GET['filter_client']) && $_GET['filter_client'] == $_idClient ? 'underline' : 'none'); ?>;text-transform: uppercase;color:<?php echo $_client['color']; ?>" href="?filter_client=<?php echo $_idClient; ?>"><?php echo $_idClient; ?></a></strong></li>
+            <?php endforeach; ?>
+            <li><strong><a href="?">-> Tous</a></strong></li>
+        </ul>
+    </div>
+    <div>
         <h3>Infos</h3>
         <p>
             <strong>Heures travaillées par jour :</strong> <?php echo $retroPlanning->max_hours_per_day; ?><br />
-            <strong>Jours fériés :</strong> <?php echo implode(', ', $retroPlanning->holidays); ?>
+            <strong>Jours fériés :</strong> <?php echo implode(', ', $retroPlanning->holidays); ?><br />
+            <strong>Vacances :</strong> <?php echo implode(', ', $retroPlanning->vacations); ?>
         </p>
     </div>
 </div>
